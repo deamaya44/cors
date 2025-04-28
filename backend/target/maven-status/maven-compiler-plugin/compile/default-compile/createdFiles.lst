@@ -1,0 +1,4 @@
+com/api/controller/PingController.class
+com/api/App.class
+com/api/model/Item.class
+com/api/repository/ItemRepository.class
