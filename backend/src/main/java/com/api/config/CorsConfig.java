@@ -9,7 +9,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry apiRegistry) {
         apiRegistry.addMapping("/api/items/**") // Cambia según necesites
-                .allowedOrigins("http://localhost:5173") // Cambia según necesites
+                .allowedOrigins("http://localhost:5173","http://pepito.local") // Cambia según necesites
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 }
