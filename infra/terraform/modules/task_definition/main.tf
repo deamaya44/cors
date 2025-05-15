@@ -40,11 +40,15 @@ resource "aws_ecs_task_definition" "microservices" {
         },
         {
           name  = "DOMAINS"
-          value = "${var.domain_name}"
+          value = "https://${var.domain_name},http://localhost:81"
         },
         {
           name  = "METHODS"
           value = "GET,POST,PUT,DELETE,OPTIONS"
+        },
+        {
+          name  = "MAPPING"
+          value = "/**"
         }
       ]
       secrets = [

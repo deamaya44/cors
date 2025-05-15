@@ -6,11 +6,10 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
 
-  const baseURL = `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_ENV}/backend/api`;
-
+  
 
   const api = axios.create({
-    baseURL: baseURL, // URL base de tu backend
+    baseURL: 'https://dev-api.devopsamaya.com/backend/api', // URL base de tu backend
   });
 
 
