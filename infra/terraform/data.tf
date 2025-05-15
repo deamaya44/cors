@@ -30,6 +30,11 @@ data "aws_subnets" "private_subnets" {
 data "aws_region" "current" {
   name = "us-east-1"
 }
+
+data "aws_route53_zone" "dns_zone" {
+  name         = "devopsamaya.com."
+  private_zone = false
+}
 # data "aws_security_group" "sg_lambda" {
 #   name = "lambda-general"
 # }

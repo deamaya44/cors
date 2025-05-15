@@ -21,3 +21,12 @@ variable "acm_certificate_arn" {
   description = "The ACM certificate ARN"
   type        = string
 }
+variable "zone_id" {
+  description = "The Route53 zone ID"
+  type        = string
+}
+variable "domain_name" {
+  description = "The domain name for the Route53 record"
+  type        = string
+  
+}

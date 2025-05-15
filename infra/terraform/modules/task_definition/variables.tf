@@ -83,5 +83,13 @@ variable "secret" {
 variable "rds_sg" {
   type        = string
   description = "ID del security group de RDS"
-
+}
+variable "rds_name" {
+  type        = string
+  description = "Nombre del host de la base de datos RDS"
+}
+variable "dbname" {
+  type        = string
+  description = "Nombre de la base de datos"
+  
 }

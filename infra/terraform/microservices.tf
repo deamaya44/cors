@@ -19,7 +19,7 @@ locals {
       }
       hc = {
         path    = "/api/items"
-        matcher = "200"
+        matcher = "404"
       }
     }
   }

@@ -30,13 +30,7 @@ locals {
   }
 
   acm_domains_map = {
-    dev  = "dev.devopsamaya.com"
-    qa   = "" #Pending
-    uat  = "" #Pending
-    prod = "" #Pending
-  }
-  acm_certificates_map = {
-    dev  = "arn:aws:acm:us-east-1:975050209148:certificate/7ebca2e5-2b56-4baf-8681-abb851ea70d3"
+    dev  = "devopsamaya.com"
     qa   = "" #Pending
     uat  = "" #Pending
     prod = "" #Pending
@@ -52,14 +46,17 @@ locals {
   cidr_block  = local.cidr_blockMap[terraform.workspace]
   rdsname     = local.rds_instance_map[terraform.workspace]
   secret      = local.secrets_map[terraform.workspace]
-  acm_cert    = local.acm_certificates_map[terraform.workspace]
-  #AssumeRoleARN Operaciones
   account_id = local.account_id_map[terraform.workspace]
   domains    = local.acm_domains_map[terraform.workspace]
-  #Some for each
-  # bucles = {
-  #   registry = {
-  #     ejemplo = module.ecr.repository_name
-  #   }
-  # }
+
+  rds-postgres = {
+    dev = {
+      enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
+      instance_class                  = "db.t4g.micro"
+      engine                          = "postgres"
+      engine_version                  = "16.3"
+      allocated_storage               = 20
+      max_allocated_storage           = 100
+    }
+  }
 }

@@ -16,15 +16,17 @@ import com.api.model.Item;
 import com.api.repository.ItemRepository;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("${ENV}/${MICRO_NAME}/api")
 public class PingController {
 
     @Autowired
     private ItemRepository itemRepository;
+
     @GetMapping("/items")
     public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
+
     @PostMapping("/items")
     public Item createItem(@RequestBody Item item) {
         return itemRepository.save(item);

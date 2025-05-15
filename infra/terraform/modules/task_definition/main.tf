@@ -27,54 +27,26 @@ resource "aws_ecs_task_definition" "microservices" {
       }
       environment = [
         {
+          name  = "SPRING_DATASOURCE_URL"
+            value = "jdbc:postgresql://${var.rds_name}/${var.dbname}"
+        },
+        {
           name  = "ENV"
-          value = var.environment
+            value = "${var.environment}"
         },
         {
-          name  = "MICRO"
-          value = join("-", slice(split("-", var.name), 1, length(split("-", var.name))))
-        },
-        {
-          name  = "APP_PORT"
-          value = tostring(var.containerPort)
+          name  = "MICRO_NAME"
+            value = join("-", slice(split("-", var.name), 1, length(split("-", var.name))))
         }
       ]
       secrets = [
         {
-          name      = "RDS_HOSTNAME"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:RDS_HOSTNAME::"
+          name      = "SPRING_DATASOURCE_USERNAME"
+          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:username::"
         },
         {
-          name      = "RDS_USERNAME"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:RDS_USERNAME::"
-        },
-        {
-          name      = "RDS_PASSWORD"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:RDS_PASSWORD::"
-        },
-        {
-          name      = "RDS_PORT"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:RDS_PORT::"
-        },
-        # {
-        #   name      = "APP_PORT"
-        #   valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:APP_PORT::"
-        # },
-        {
-          name      = "JWT_EXPIRES_IN_MINUTES"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:JWT_EXPIRES_IN_MINUTES::"
-        },
-        {
-          name      = "JWT_EXPIRES_IN_MINUTES_REFRESH"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:JWT_EXPIRES_IN_MINUTES_REFRESH::"
-        },
-        {
-          name      = "JWT_SECRET"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:JWT_SECRET::"
-        },
-        {
-          name      = "JWT_SECRET_KEY"
-          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:JWT_SECRET_KEY::"
+          name      = "SPRING_DATASOURCE_PASSWORD"
+          valueFrom = "${data.aws_secretsmanager_secret.globals.arn}:password::"
         }
       ]
     }
