@@ -1,0 +1,22 @@
+services:
+  db:
+    extends:
+      file: db/docker-compose.yml
+      service: db
+
+  backend:
+    extends:
+      file: backend/docker-compose.yml
+      service: backend
+    depends_on:
+      - db
+
+  frontend: 
+    extends:
+      file: frontend/docker-compose.yml
+      service: frontend
+    depends_on:
+       - backend
+
+volumes:
+  db_data:

@@ -1,0 +1,25 @@
+# Compiled files
+#*.tfstate
+#*.tfstate.backup
+
+# Module directory
+.terraform/
+.terraform.lock.hcl
+**/.terraform.lock.hcl
+.infracost/
+.vscode/
+.idea
+*.iml
+
+.build-harness
+build-harness
+
+.DS_Store
+.old
+**/*.zip
+*.zip
+errored.tfstate
+terraform-aws-api-gateway-basic
+*.txt
+*.sh
+app
