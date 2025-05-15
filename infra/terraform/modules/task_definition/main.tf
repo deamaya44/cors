@@ -31,12 +31,12 @@ resource "aws_ecs_task_definition" "microservices" {
           value = var.environment
         },
         {
-          name = "MICRO"
+          name  = "MICRO"
           value = join("-", slice(split("-", var.name), 1, length(split("-", var.name))))
         },
         {
-          name      = "APP_PORT"
-            value = tostring(var.containerPort)
+          name  = "APP_PORT"
+          value = tostring(var.containerPort)
         }
       ]
       secrets = [
@@ -138,27 +138,7 @@ resource "aws_lb_target_group" "cors_tg" {
     matcher             = var.matcher
   }
 }
-resource "aws_lb_target_group" "websocket_tg" {
-  count       = var.websocket ? 1 : 0
-  name        = "${var.name}-ws-tg"
-  port        = var.containerPort
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
 
-  lifecycle {
-    prevent_destroy = false
-  }
-
-  health_check {
-    path                = var.path
-    interval            = 45
-    timeout             = 15
-    healthy_threshold   = 5
-    unhealthy_threshold = 5
-    matcher             = var.matcher
-  }
-}
 
 resource "aws_lb_listener_rule" "cors_rules" {
   listener_arn = var.listener_alb_arn
@@ -186,31 +166,7 @@ resource "aws_lb_listener_rule" "cors_rules" {
   depends_on = [aws_lb_target_group.cors_tg]
 }
 
-resource "aws_lb_listener_rule" "websocket_rules" {
-  count       = var.websocket ? 1 : 0
-  listener_arn = var.listener_alb2_arn
-  action {
-    type = "forward"
-    forward {
-      target_group {
-        arn = aws_lb_target_group.websocket_tg[0].arn
-      }
-      stickiness {
-        enabled  = false
-        duration = 3600
-      }
-    }
-  }
 
-  condition {
-    path_pattern {
-      values = ["/${var.environment}/${join("-", slice(split("-", var.name), 1, length(split("-", var.name))))}*"]
-      # values = ["/"]
-    }
-  }
-
-  depends_on = [aws_lb_target_group.websocket_tg]
-}
 resource "aws_ecs_service" "cors_service" {
   name                               = "${var.name}-service"
   cluster                            = var.cluster_id
@@ -230,19 +186,10 @@ resource "aws_ecs_service" "cors_service" {
     container_port   = var.containerPort
   }
 
-  dynamic "load_balancer" {
-    for_each = var.websocket ? [aws_lb_target_group.websocket_tg[0]] : []
-    content {
-      target_group_arn = load_balancer.value.arn
-      container_name   = var.name
-      container_port   = var.containerPort
-    }
-  }
 
   depends_on = [
     aws_lb_target_group.cors_tg,
     aws_lb_listener_rule.cors_rules,
-    aws_lb_listener_rule.websocket_rules,
     aws_security_group.cors_service_sg
   ]
 }

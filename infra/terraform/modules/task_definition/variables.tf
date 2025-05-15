@@ -36,10 +36,6 @@ variable "listener_alb_arn" {
   description = "ARN del Listener del ALB"
   type        = string
 }
-variable "listener_alb2_arn" {
-  description = "ARN del Listener del ALB"
-  type        = string
-}
 variable "cpu" {
   type        = number
   description = "Cantidad de CPU para la tarea"
@@ -88,8 +84,4 @@ variable "rds_sg" {
   type        = string
   description = "ID del security group de RDS"
 
-}
-variable "websocket" {
-  type        = bool
-  description = "Habilitar WebSocket"
 }

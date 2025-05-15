@@ -31,8 +31,8 @@ locals {
               }
             }
             resource2 = {
-              path = "null"
-              methods = { GET = {}}
+              path    = "null"
+              methods = { GET = {} }
             }
           }
         }

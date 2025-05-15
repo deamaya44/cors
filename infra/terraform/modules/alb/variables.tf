@@ -21,5 +21,5 @@ variable "environment" {
 variable "internal" {
   type        = bool
   description = "description"
-  
+
 }
