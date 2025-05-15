@@ -86,9 +86,9 @@ resource "aws_s3_bucket_policy" "bucket_policy_cors" {
 resource "aws_route53_record" "cloudfront_alias" {
   zone_id = var.zone_id
   name    = "${var.environment}.${var.domain_name}"
-  type = "CNAME"
+  type    = "CNAME"
 
-  records = [aws_cloudfront_distribution.s3_distribution_cors.domain_name]
-  ttl     = 300
-  depends_on = [ aws_cloudfront_distribution.s3_distribution_cors ]
+  records    = [aws_cloudfront_distribution.s3_distribution_cors.domain_name]
+  ttl        = 300
+  depends_on = [aws_cloudfront_distribution.s3_distribution_cors]
 }

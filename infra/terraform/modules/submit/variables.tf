@@ -7,6 +7,6 @@ variable "bucket_name" {
   description = "Nombre del bucket de S3"
 }
 variable "cloudfrontid" {
-    type        = string
-    description = "ID de CloudFront"
+  type        = string
+  description = "ID de CloudFront"
 }

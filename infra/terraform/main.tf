@@ -19,7 +19,7 @@ module "upload" {
   context    = each.value.docker_context
   dockerfile = each.value.dockerfile
   registry   = "${local.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com"
-  depends_on = [ module.ecr, module.task_definition ]
+  depends_on = [module.ecr, module.task_definition]
 }
 module "alb" {
   source          = "./modules/alb"
@@ -38,7 +38,7 @@ module "nlb" {
   vpc_id          = data.aws_vpc.control_tower_vpc.id
   private_subnets = data.aws_subnets.private_subnets.ids
   alb_arn         = module.alb.alb_arn
-  depends_on = [ module.alb ]
+  depends_on      = [module.alb]
 }
 
 module "rds" {
@@ -82,17 +82,24 @@ module "task_definition" {
   matcher          = each.value.hc.matcher
   secret           = module.rds[local.environment].secret_arn
   rds_sg           = module.rds[local.environment].rds_sg
-  rds_name = module.rds[local.environment].rds_name
+  rds_name         = module.rds[local.environment].rds_name
   dbname           = module.rds[local.environment].dbname
-  depends_on       = [ module.rds ]
+  domain_name      = "${local.environment}.${local.domains}"
+  depends_on       = [module.rds]
 
 }
 
 module "acm" {
   source      = "./modules/acm"
+  domain_name = "${local.environment}.${local.domains}"
   environment = local.environment
-  domain_name = local.domains
-  zone_id    = data.aws_route53_zone.dns_zone.id
+  zone_id     = data.aws_route53_zone.dns_zone.id
+}
+module "acm_api" {
+  source      = "./modules/acm"
+  domain_name = "${local.environment}-api.${local.domains}"
+  environment = local.environment
+  zone_id     = data.aws_route53_zone.dns_zone.id
 }
 module "cloudfront" {
   source              = "./modules/s3_cloudfront"
@@ -101,26 +108,26 @@ module "cloudfront" {
   s3_access           = "private"
   aliases             = ["${local.environment}.${local.domains}"]
   acm_certificate_arn = module.acm.acm_cert
-  zone_id            = data.aws_route53_zone.dns_zone.id
+  zone_id             = data.aws_route53_zone.dns_zone.id
   domain_name         = local.domains
-  depends_on          = [ module.acm ]
+  depends_on          = [module.acm]
 }
 
 module "submit" {
-  source      = "./modules/submit"
-  environment = local.environment
-  bucket_name = "web-cors-${local.environment}"
+  source       = "./modules/submit"
+  environment  = local.environment
+  bucket_name  = "web-cors-${local.environment}"
   cloudfrontid = module.cloudfront.cloudfront_id
-  depends_on  = [ module.cloudfront ]
+  depends_on   = [module.cloudfront]
 }
 
-module "apigateway" {
-  source      = "./modules/apigateway"
-  name      = "backend"
-  environment = local.environment
-  domain_name = local.domains
-  zone_id    = data.aws_route53_zone.dns_zone.id
-  alb_dns = module.alb.alb_dns_name
-  vpclink_id = module.nlb.vpc_link_id
-  depends_on  = [ module.nlb ]
-}
+# module "apigateway" {
+#   source      = "./modules/apigateway"
+#   name      = "backend"
+#   environment = local.environment
+#   domain_name = "${local.environment}-api.${local.domains}"
+#   zone_id    = data.aws_route53_zone.dns_zone.id
+#   alb_dns = module.alb.alb_dns_name
+#   vpclink_id = module.nlb.vpc_link_id
+#   depends_on  = [ module.nlb ]
+# }

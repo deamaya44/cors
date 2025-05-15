@@ -28,15 +28,23 @@ resource "aws_ecs_task_definition" "microservices" {
       environment = [
         {
           name  = "SPRING_DATASOURCE_URL"
-            value = "jdbc:postgresql://${var.rds_name}/${var.dbname}"
+          value = "jdbc:postgresql://${var.rds_name}/${var.dbname}"
         },
         {
           name  = "ENV"
-            value = "${var.environment}"
+          value = "${var.environment}"
         },
         {
           name  = "MICRO_NAME"
-            value = join("-", slice(split("-", var.name), 1, length(split("-", var.name))))
+          value = join("-", slice(split("-", var.name), 1, length(split("-", var.name))))
+        },
+        {
+          name  = "DOMAINS"
+          value = "${var.domain_name}"
+        },
+        {
+          name  = "METHODS"
+          value = "GET,POST,PUT,DELETE,OPTIONS"
         }
       ]
       secrets = [

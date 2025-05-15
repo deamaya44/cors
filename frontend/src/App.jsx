@@ -6,9 +6,13 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState('');
 
+  const baseURL = `${import.meta.env.VITE_API_BASE_URL}/${import.meta.env.VITE_API_ENV}/backend/api`;
+
+
   const api = axios.create({
-    baseURL: 'http://localhost:8080/api', // URL base de tu backend
+    baseURL: baseURL, // URL base de tu backend
   });
+
 
   // Obtener todos los ítems
   const fetchItems = async () => {

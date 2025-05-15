@@ -8,7 +8,7 @@ variable "domain_name" {
 }
 variable "zone_id" {
   description = "ID de la zona de Route53"
-  type        = string 
+  type        = string
 }
 variable "alb_dns" {
   description = "Nombre DNS del ALB"

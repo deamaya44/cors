@@ -4,7 +4,7 @@ output "cloudfront_domain_name" {
 }
 output "s3_cloudfront_bucket" {
   description = "The S3 bucket name"
-  value       = aws_s3_bucket.s3_cors.bucket 
+  value       = aws_s3_bucket.s3_cors.bucket
 }
 output "cloudfront_id" {
   description = "The ID of the CloudFront distribution"

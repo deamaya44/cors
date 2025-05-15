@@ -46,8 +46,8 @@ locals {
   cidr_block  = local.cidr_blockMap[terraform.workspace]
   rdsname     = local.rds_instance_map[terraform.workspace]
   secret      = local.secrets_map[terraform.workspace]
-  account_id = local.account_id_map[terraform.workspace]
-  domains    = local.acm_domains_map[terraform.workspace]
+  account_id  = local.account_id_map[terraform.workspace]
+  domains     = local.acm_domains_map[terraform.workspace]
 
   rds-postgres = {
     dev = {
@@ -59,4 +59,5 @@ locals {
       max_allocated_storage           = 100
     }
   }
+
 }
