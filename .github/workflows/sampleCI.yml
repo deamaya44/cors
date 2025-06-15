@@ -1,0 +1,25 @@
+name: sampleCI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Join in the docker folder
+      run: | 
+        pwd
+        cd infra/docker
+    - name: Build the app
+      run: | 
+        pwd
+        docker compose build
+        
