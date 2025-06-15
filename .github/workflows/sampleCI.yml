@@ -16,10 +16,14 @@ jobs:
     - uses: actions/checkout@v4
     - name: Join in the docker folder
       run: | 
+        ls
+        touch sample.txt
         pwd
         cd infra/docker
+        pwd
+        docker compose build
     - name: Build the app
       run: | 
         pwd
-        docker compose build
+        ls
         
